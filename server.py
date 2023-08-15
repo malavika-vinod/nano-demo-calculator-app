@@ -1,35 +1,33 @@
 from flask import Flask, request, jsonify
+from dataclasses import dataclass
+
+@dataclass
+class Result:
+    result: int
+
+from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route("/calculator/greeting", methods=['GET'])
 def greeting():
-
-    return 'hello world!', 200
+    return 'Hello world!'
+    return ''
 
 @app.route("/calculator/add", methods=['POST'])
 def add():
-    data = request.json
-    first = data.get('first')
-    second = data.get('second')
-    
-    if first is None or second is None:
-        return 'Bad Request', 400
-    
-    result = first + second
-    return jsonify({'result': result}), 200
+    numbers = request.json
+    response = Result(numbers['first'] + numbers['second'])
+    return jsonify(response)
+    return ''
 
 @app.route("/calculator/subtract", methods=['POST'])
 def subtract():
-    data = request.json
-    first = data.get('first')
-    second = data.get('second')
-    
-    if first is None or second is None:
-        return 'Bad Request', 400
-    
-    result = first - second
-    return jsonify({'result': result}), 200
+    numbers = request.json
+    response = Result(numbers['first'] - numbers['second'])
+    return jsonify(response)
+    return ''
 
 if __name__ == '__main__':
     app.run(port=8080,host='0.0.0.0')
